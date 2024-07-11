@@ -1,0 +1,344 @@
+using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace ArraysAssignment
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //Q1.
+            removeDuplicate([2, 2, 5, 8, 5, 9, 3]);
+            Console.WriteLine();
+
+            //Q2
+            largestAndSecondLargestNumber([2, 2, 5, 8, 5, 9, 3]);
+            Console.WriteLine();
+
+            //Q3
+            replaceZerosToEnd([2, 2, 0, 5, 0, 8, 5, 0, 9, 3, 0]);
+            Console.WriteLine();
+
+            //Q4
+            Console.WriteLine(firstNonRepeatingCharacter("Swiss"));
+
+            //Q5
+            mergearrays([1,3,5,7,9], [2,4,6]);
+            Console.WriteLine();
+
+            //6
+            Console.WriteLine(findMissing([1, 3, 2, 5, 6, 8, 4, 0, 9]));
+            Console.WriteLine();
+
+            //Q7
+            isrAmstrong(153);
+
+            //Q8
+
+
+            //Q.9
+            fibonici(6);
+            Console.WriteLine();
+
+            //numbers count
+            NumberCount();
+
+        }
+
+        /*Q11.	Write a program to delete the duplicates from an array. Example: If A = { 2, 2, 5, 8, 5, 9, 3 } then output should be A = {2,5,8,9,3} */
+
+        static void removeDuplicate(int[] arr)
+        {
+            for (int i = 0; i < arr.Length - 1; i++)
+            {
+                for (int j = i + 1; j < arr.Length; j++)
+                {
+                    if (arr[i] == arr[j])
+                    {
+                        while (j < arr.Length - 1)
+                        {
+                            arr[j] = arr[j + 1];
+                            j++;
+                        }
+                        //giving such number that are not expected
+                        arr[j] = -11222211;
+                    }
+                }
+            }
+            for (int i = 0; i < arr.Length; i++)
+            {
+                //if the unexpected number comes, do not print
+                if (arr[i] != -11222211)
+                    Console.Write($"{arr[i]} ");
+            }
+        }
+
+
+        //Q2
+        static void largestAndSecondLargestNumber(int[] arr)
+        {
+            int size = arr.Length;
+            //intializing two pointers
+            int leftPointer = 0;
+            int rightPointer = size - 1;
+
+            //initializing the values on the left and right pointers
+            int valueAtLeftPointer = arr[leftPointer];
+            int valueAtRightPointer = arr[rightPointer];
+
+            //if there's only one Element in the array
+            if (leftPointer == rightPointer)
+            {
+                Console.WriteLine("There's only one Element in the array");
+            }
+            else
+            {
+                //changing the indices so that, compare it with values
+                leftPointer++;
+                rightPointer--;
+                while (leftPointer <= rightPointer)
+                {
+                    if (valueAtLeftPointer < arr[leftPointer])
+                    {
+                        valueAtLeftPointer = arr[leftPointer];
+                    }
+                    if (valueAtRightPointer < arr[rightPointer])
+                    {
+                        valueAtRightPointer = arr[rightPointer];
+                    }
+                    //changing the indices
+                    leftPointer++;
+                    rightPointer--;
+                }
+            }
+            //At the end we got two largest numbers
+            //Now checking that which one is the largest and which one is the 2nd largest
+            if (valueAtLeftPointer > valueAtRightPointer)
+            {
+                Console.Write($"Largest of array is {valueAtLeftPointer} and 2nd largest is {valueAtRightPointer}");
+            }
+            else
+            {
+                Console.Write($"Largest of array is {valueAtRightPointer} and 2nd largest is {valueAtLeftPointer}");
+            }
+
+        }
+
+
+        //Q3
+        static void replaceZerosToEnd(int[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                // checking that the index has the value 0 or not
+                if (arr[i] == 0)
+                {
+                    int j = i;
+                    //if value 0 found then move the next elemnts one bit back and placed 0 at the end
+                    while (j < arr.Length - 1)
+                    {
+                        arr[j] = arr[j + 1];
+                        j++;
+                    }
+                    arr[j] = 0;
+                }
+            }
+            //displaying the originated array
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Console.Write($"{arr[i]} ");
+            }
+        }
+
+        //Q5
+        static char firstNonRepeatingCharacter(string str)
+        {
+            //manipulating the string for case insensitivity
+            string manipulatedString = str.ToLower();
+            for (int i = 0; i < str.Length - 1; i++)
+            {
+                for (int j = i + 1; j < str.Length; j++)
+                {
+                    //checking that if react at the last character
+                    if (j == str.Length - 1)
+                    {
+                        //if last character also not the same the returning the charcter
+                        if(manipulatedString[i] != manipulatedString[j])
+                        {
+                        return Convert.ToChar(manipulatedString[i]);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    //at any case two characters have same value then, skip this loop and move to the first one and pik the next character
+                    else if (manipulatedString[i] == manipulatedString[j])
+                    {
+                        break;
+                    }
+                }
+            }
+            //return statement to for compiler satisifaction
+            return manipulatedString[str.Length - 1];
+        }
+
+        //6
+        static int findMissing(int[] arr)
+        {
+            //sorting in the ascending order so that the smallest comes to the 0th index
+            for (int i = 0; i < arr.Length; i++)
+            {
+                for (int j = i + 1; j < arr.Length; j++)
+                {
+                    if (arr[i] > arr[j])
+                    {
+                        int temp = arr[i];
+                        arr[i] = arr[j];
+                        arr[j] = temp;
+                    }
+                }
+                //as the smallest number is 0, so it means index number and the value on that index having same values
+                if (arr[i] != i)
+                {
+                    return i;
+                }
+            }
+            //return statement to for compiler satisifaction
+            return arr.Length - 1;
+        }
+
+        // isArmStrong
+        static void isrAmstrong(int num)
+        {
+            int originalNumber = num;
+            int armstrongNumber = 0;
+            while (num > 0)
+            {
+                int rem = num % 10;
+                armstrongNumber = armstrongNumber + (rem * rem * rem);
+                num /= 10;
+            }
+            if (originalNumber == armstrongNumber)
+            {
+                Console.WriteLine("ArmStrong");
+            }
+            else
+            {
+                Console.WriteLine("Not ArmStrong");
+            }
+        }
+
+        //fibonici
+        static void fibonici(int num)
+        {
+            //initializing the array for containing the fibonici series number of size inputs by user
+            int[] arr = new int[num];
+            int counter = 0;
+            while (counter < num)
+            {
+                if (counter == 0)
+                {
+                    arr[counter] = 0;
+                }
+                else if (counter == 1)
+                {
+                    arr[counter] = 1;
+                }
+                else
+                {
+                    arr[counter] = arr[counter - 1] + arr[counter - 2];
+                }
+                counter++;
+            }
+            for (int i = 0; i < num; i++)
+            {
+                Console.Write($"{arr[i]} ");
+            }
+        }
+
+        //merge arrays
+        static void mergearrays(int[] arr1, int[] arr2)
+        {
+            //declaring two iterators for both two arrays
+            int i, j, sizeOfFirstArray, sizeOfSecondArray;
+            sizeOfFirstArray = arr1.Length;
+            sizeOfSecondArray = arr2.Length;
+            i = 0; j = 0;
+            int[] arr = new int[sizeOfFirstArray + sizeOfSecondArray];
+            while (i < sizeOfFirstArray || j < sizeOfSecondArray)
+            {
+                if (i >= sizeOfFirstArray)
+                {
+                    while (j < sizeOfSecondArray)
+                    {
+                        arr[i + j] = arr2[j];
+                        j++;
+                    }
+                }
+                else if (j >= sizeOfSecondArray)
+                {
+                    while (i < sizeOfFirstArray)
+                    {
+                        arr[i + j] = arr1[i];
+                        i++;
+                    }
+                }
+                else
+                {
+                    if (arr1[i] <= arr2[j])
+                    {
+                        arr[i + j] = arr1[i];
+                        i++;
+                    }
+                    else
+                    {
+                        arr[i + j] = arr2[j];
+                        j++;
+                    }
+                }
+            }
+            foreach (int item in arr)
+            {
+                Console.Write($"{item} ");
+            }
+        }
+
+        //plaay with numbers
+        static void NumberCount()
+        {
+            Console.Write("Enter n:");
+            int n = Convert.ToInt32(Console.ReadLine());
+            Console.Write($"Enter {n} values:");
+            //initializing the positive and negative cout varibles with 0
+            int poscount = 0;
+            int negcount = 0;
+            int sum = 0;
+            float avg = 0;
+            int i = 0;
+            int[] numbers = new int[n];
+            while (i < n)
+            {
+                numbers[i] = Convert.ToInt32(Console.ReadLine());
+                if (numbers[i] >= 0)
+                {
+                    poscount++;
+                }
+                else
+                {
+                    negcount++;
+                }
+                sum = sum + numbers[i];
+                i++;
+            }
+            avg = Convert.ToSingle(sum) / Convert.ToSingle(n);
+            Console.Write($"Number of positive number: " + poscount + "\n");
+            Console.Write($"Number of negative number: " + negcount + "\n");
+            Console.Write($"Total: " + sum + "\n");
+            Console.Write($"Average is: " + avg + "\n");
+
+        }
+
+        //longest prefix
+    }
+}
